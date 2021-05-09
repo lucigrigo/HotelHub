@@ -1,2 +1,2 @@
-- create entities for all models
-- implement methods for user (create & login)
+- implement methods for user (create & login) ASAP
+- at least add empty methods for all possible actions of all actors
