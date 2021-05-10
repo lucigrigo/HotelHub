@@ -8,12 +8,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
+
 @RestController
 public class FrontendController {
     @PostMapping("/users/create")
     public ResponseEntity<Object> createUser(
             @RequestBody User user
-    ) {
+    ) throws IOException, ExecutionException, InterruptedException {
         return UserServices.createUser(user);
     }
 
@@ -21,7 +24,7 @@ public class FrontendController {
     public ResponseEntity<Object> loginUser(
             @RequestParam(required = false, name = "email") String email,
             @RequestParam(required = false, name = "password") String password
-    ) {
+    ) throws IOException, ExecutionException, InterruptedException {
         return UserServices.loginUser(email, password);
     }
 }
