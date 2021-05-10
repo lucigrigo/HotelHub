@@ -82,6 +82,7 @@ public class DatabaseController {
             throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("users").document(Integer.toString(newUser.getId_user()));
         Map<String, Object> data = new HashMap<>();
+        data.put("name", newUser.getName());
         data.put("email", newUser.getEmail());
         data.put("password", newUser.getPassword());
         data.put("is_admin", newUser.isAdmin());
