@@ -7,7 +7,7 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-public class Reservation {
+public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id_reservation;

@@ -20,7 +20,9 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class DatabaseController {
+
     private static Firestore database = null;
+
     public static Firestore getDatabase() throws IOException, ExecutionException, InterruptedException {
         if (database != null) {
             return database;
