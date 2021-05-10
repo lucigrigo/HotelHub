@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 public class DatabaseController {
     private static Firestore database = null;
-    public static Firestore getDatabase() throws IOException {
+    public static Firestore getDatabase() throws IOException, ExecutionException, InterruptedException {
         if (database != null) {
             return database;
         }
@@ -40,7 +40,9 @@ public class DatabaseController {
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
         for (QueryDocumentSnapshot document : documents) {
-            if (document.getString("email").equals(email)) {
+            String doc_email = document.getString("email");
+            assert doc_email != null;
+            if (doc_email.equals(email)) {
                 return true;
             }
         }
@@ -52,12 +54,12 @@ public class DatabaseController {
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
         for (QueryDocumentSnapshot document : documents) {
-            if (document.getString("email").equals(email)) {
-                if (document.getString("password").equals(password)) {
-                    return true;
-                } else {
-                    return false;
-                }
+            String doc_email = document.getString("email");
+            assert doc_email != null;
+            if (doc_email.equals(email)) {
+                String doc_password = document.getString("password");
+                assert doc_password != null;
+                return doc_password.equals(password);
             }
         }
         return false;
@@ -93,7 +95,7 @@ public class DatabaseController {
         System.out.println("Update time : " + result.get().getUpdateTime());
     }
 
-    public static void main(String[] args) {
-
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
+        Firestore database = getDatabase();
     }
 }

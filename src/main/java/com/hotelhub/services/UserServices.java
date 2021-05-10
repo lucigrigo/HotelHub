@@ -10,25 +10,34 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class UserServices {
-    private static int no_users = 0;
-    public static ResponseEntity<Object> createUser(User newUser) throws IOException, ExecutionException, InterruptedException {
+    public static ResponseEntity<Object> createUser(User newUser) {
         // TODO: add user to database; check if he already exists
-        Firestore database = DatabaseController.getDatabase();
-        if (!DatabaseController.searchUser(database, newUser.getEmail())) {
-            no_users++;
-            DatabaseController.addUser(database, newUser);
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (!DatabaseController.searchUser(database, newUser.getEmail())) {
+                DatabaseController.addUser(database, newUser);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+            }
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    public static ResponseEntity<Object> loginUser(String email, String password) throws IOException, ExecutionException, InterruptedException {
+    public static ResponseEntity<Object> loginUser(String email, String password) {
         // TODO: check if user exists in database
-        Firestore database = DatabaseController.getDatabase();
-        if (DatabaseController.checkCredentials(database, email, password)) {
-
-        } else {
-
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.checkCredentials(database, email, password)) {
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+            }
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
