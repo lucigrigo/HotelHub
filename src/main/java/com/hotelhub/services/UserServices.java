@@ -10,8 +10,8 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 public class UserServices {
+
     public static ResponseEntity<Object> createUser(User newUser) {
-        // TODO: add user to database; check if he already exists
         try {
             Firestore database = DatabaseController.getDatabase();
             if (!DatabaseController.searchUser(database, newUser.getEmail())) {
@@ -27,7 +27,6 @@ public class UserServices {
     }
 
     public static ResponseEntity<Object> loginUser(String email, String password) {
-        // TODO: check if user exists in database
         try {
             Firestore database = DatabaseController.getDatabase();
             if (DatabaseController.checkCredentials(database, email, password)) {
