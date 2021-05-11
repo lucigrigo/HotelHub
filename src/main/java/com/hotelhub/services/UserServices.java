@@ -30,7 +30,8 @@ public class UserServices {
         try {
             Firestore database = DatabaseController.getDatabase();
             if (DatabaseController.checkCredentials(database, email, password)) {
-                return new ResponseEntity<>(true, null, HttpStatus.OK);
+                User user = DatabaseController.getUser(database, email, password);
+                return new ResponseEntity<>(user, null, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(false, null, HttpStatus.OK);
             }

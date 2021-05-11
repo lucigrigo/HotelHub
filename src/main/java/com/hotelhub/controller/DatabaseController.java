@@ -3,6 +3,8 @@ package com.hotelhub.controller;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.firebase.database.annotations.NotNull;
+import com.google.firebase.internal.NonNull;
 import com.hotelhub.model.User;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -16,6 +18,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -67,6 +70,36 @@ public class DatabaseController {
         return false;
     }
 
+    public static User getUser(Firestore db, String email, String password) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("users").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_email = document.getString("email");
+            assert doc_email != null;
+            if (doc_email.equals(email)) {
+                String doc_password = document.getString("password");
+                assert doc_password != null;
+
+                boolean doc_is_admin = false;
+                if (document.getBoolean("is_admin") != null) {
+                    doc_is_admin = Objects.requireNonNull(document.getBoolean("is_admin"));
+                }
+
+                int doc_hotel_admin = 0;
+                if (document.getLong("hotel_admin") != null) {
+                    doc_hotel_admin = Objects.requireNonNull(document.getLong("hotel_admin")).intValue();
+                }
+
+                if(doc_password.equals(password)) {
+                    return new User(Integer.parseInt(document.getId()), document.getString("name"),
+                            doc_email, doc_password, doc_is_admin, doc_hotel_admin);
+                }
+            }
+        }
+        return null;
+    }
+
     public static void addUser(Firestore db, User newUser)
             throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("users").document(Integer.toString(newUser.getId_user()));
@@ -78,8 +111,7 @@ public class DatabaseController {
         if (newUser.isAdmin()) {
             data.put("hotel_admin", newUser.getHotel_admin());
         }
-        ApiFuture<WriteResult> result = docRef.set(data);
-        System.out.println("Update time : " + result.get().getUpdateTime());
+        docRef.set(data);
     }
 
     /**
