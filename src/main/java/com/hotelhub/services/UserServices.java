@@ -33,7 +33,7 @@ public class UserServices {
                 User user = DatabaseController.getUser(database, email, password);
                 return new ResponseEntity<>(user, null, HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(false, null, HttpStatus.OK);
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
             }
         } catch (IOException | ExecutionException | InterruptedException exception) {
             exception.printStackTrace();
