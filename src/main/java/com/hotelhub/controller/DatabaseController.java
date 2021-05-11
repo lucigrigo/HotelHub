@@ -3,8 +3,6 @@ package com.hotelhub.controller;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
-import com.google.firebase.database.annotations.NotNull;
-import com.google.firebase.internal.NonNull;
 import com.hotelhub.model.User;
 import org.springframework.web.bind.annotation.RestController;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -23,7 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class DatabaseController {
-
+    private static int no_users;
     private static Firestore database = null;
 
     public static Firestore getDatabase() throws IOException, ExecutionException, InterruptedException {
@@ -37,6 +35,7 @@ public class DatabaseController {
                 .build();
         FirebaseApp.initializeApp(options);
         database = FirestoreClient.getFirestore();
+        getLastId(database);
         return database;
     }
 
@@ -102,7 +101,8 @@ public class DatabaseController {
 
     public static void addUser(Firestore db, User newUser)
             throws ExecutionException, InterruptedException {
-        DocumentReference docRef = db.collection("users").document(Integer.toString(newUser.getId_user()));
+        no_users++;
+        DocumentReference docRef = db.collection("users").document(Integer.toString(no_users));
         Map<String, Object> data = new HashMap<>();
         data.put("name", newUser.getName());
         data.put("email", newUser.getEmail());
@@ -114,20 +114,15 @@ public class DatabaseController {
         docRef.set(data);
     }
 
-    /**
-     * Test function
-     */
-    public static void read(Firestore db) throws ExecutionException, InterruptedException {
+    private static void getLastId(Firestore db) throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("users").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        int max_id = 0;
         for (QueryDocumentSnapshot document : documents) {
-            System.out.println("User: " + document.getId());
-            System.out.println("email: " + document.getString("email"));
-            System.out.println("password: " + document.getString("password"));
-            System.out.println("is_admin: " + document.getBoolean("is_admin"));
-            if (document.contains("hotel_admin")) {
-                System.out.println("hotel_admin: " + document.getLong("hotel_admin"));
+            int doc_id = Integer.parseInt(document.getId());
+            if (doc_id > max_id) {
+                no_users = doc_id;
             }
         }
     }
