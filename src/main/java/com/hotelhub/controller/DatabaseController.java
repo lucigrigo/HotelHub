@@ -67,21 +67,6 @@ public class DatabaseController {
         return false;
     }
 
-    public static void read(Firestore db) throws ExecutionException, InterruptedException {
-        ApiFuture<QuerySnapshot> query = db.collection("users").get();
-        QuerySnapshot querySnapshot = query.get();
-        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-        for (QueryDocumentSnapshot document : documents) {
-            System.out.println("User: " + document.getId());
-            System.out.println("email: " + document.getString("email"));
-            System.out.println("password: " + document.getString("password"));
-            System.out.println("is_admin: " + document.getBoolean("is_admin"));
-            if (document.contains("hotel_admin")) {
-                System.out.println("hotel_admin: " + document.getLong("hotel_admin"));
-            }
-        }
-    }
-
     public static void addUser(Firestore db, User newUser)
             throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("users").document(Integer.toString(newUser.getId_user()));
@@ -95,6 +80,24 @@ public class DatabaseController {
         }
         ApiFuture<WriteResult> result = docRef.set(data);
         System.out.println("Update time : " + result.get().getUpdateTime());
+    }
+
+    /**
+     * Test function
+     */
+    public static void read(Firestore db) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("users").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        for (QueryDocumentSnapshot document : documents) {
+            System.out.println("User: " + document.getId());
+            System.out.println("email: " + document.getString("email"));
+            System.out.println("password: " + document.getString("password"));
+            System.out.println("is_admin: " + document.getBoolean("is_admin"));
+            if (document.contains("hotel_admin")) {
+                System.out.println("hotel_admin: " + document.getLong("hotel_admin"));
+            }
+        }
     }
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
