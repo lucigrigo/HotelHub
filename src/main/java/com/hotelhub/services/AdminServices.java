@@ -23,4 +23,12 @@ public class AdminServices {
     public static ResponseEntity<Object> alterFacility() {
         return null;
     }
+
+    public static ResponseEntity<Object> deleteRoom() {
+        return null;
+    }
+
+    public static ResponseEntity<Object> addRoom() {
+        return null;
+    }
 }

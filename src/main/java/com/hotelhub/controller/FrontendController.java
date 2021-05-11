@@ -53,14 +53,24 @@ public class FrontendController {
         return AdminServices.approveCancel();
     }
 
-    @PostMapping("/admin/actions/add_hotel")
+    @PostMapping("/admin/actions/hotel/add")
     public ResponseEntity<Object> addHotel() {
         return AdminServices.addHotel();
     }
 
-    @PostMapping("/admin/actions/delete_hotel")
+    @PostMapping("/admin/actions/hotel/delete")
     public ResponseEntity<Object> deleteHotel() {
         return AdminServices.deleteHotel();
+    }
+
+    @PostMapping("/admin/actions/room/add")
+    public ResponseEntity<Object> addRoom() {
+        return AdminServices.addRoom();
+    }
+
+    @PostMapping("/admin/actions/room/delete")
+    public ResponseEntity<Object> deleteRoom() {
+        return AdminServices.deleteRoom();
     }
 
     @PostMapping("/admin/actions/alter_facility")
