@@ -1,18 +1,32 @@
 package com.hotelhub.model;
 
+import org.springframework.data.annotation.Id;
+
 import javax.persistence.Entity;
 
 @Entity
 public class User {
-    private final int id_user;
-    private final String name;
-    private final String email;
-    private final String password;
-    private final boolean is_admin;
-    private final int hotel_admin;
+    private final int DEFAULT_ID = 0;
 
-    public User(int id_user, String name, String email, String password, boolean is_admin, int hotel_admin) {
-        this.id_user = id_user;
+    @Id
+    private int user_id;
+
+    private String name;
+
+    private String email;
+
+    private String password;
+
+    private boolean is_admin;
+
+    private int hotel_admin;
+
+    public User(String name, String email, String password, boolean is_admin, int hotel_admin) {
+        new User(DEFAULT_ID, name, email, password, is_admin, hotel_admin);
+    }
+
+    public User(int id, String name, String email, String password, boolean is_admin, int hotel_admin) {
+        this.user_id = id;
         this.name = name;
         this.email = email;
         this.password = password;
@@ -21,7 +35,7 @@ public class User {
     }
 
     public int getId_user() {
-        return id_user;
+        return user_id;
     }
 
     public String getName() {

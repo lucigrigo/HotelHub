@@ -10,7 +10,7 @@ import java.util.Date;
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id_reservation;
+    private int booking_id;
 
     private String room;
 

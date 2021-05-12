@@ -1,2 +1,2 @@
 - delete id from User class
-- implement next functions
+- implement next functions in Admin and Client classes
