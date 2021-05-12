@@ -21,9 +21,9 @@ public class User {
 
     private int hotel_admin;
 
-    public User(String name, String email, String password, boolean is_admin, int hotel_admin) {
-        new User(DEFAULT_ID, name, email, password, is_admin, hotel_admin);
-    }
+//    public User(String name, String email, String password, boolean is_admin, int hotel_admin) {
+//        new User(DEFAULT_ID, name, email, password, is_admin, hotel_admin);
+//    }
 
     public User(int id, String name, String email, String password, boolean is_admin, int hotel_admin) {
         this.user_id = id;
