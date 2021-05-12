@@ -5,12 +5,10 @@ import com.hotelhub.services.AdminServices;
 import com.hotelhub.services.ClientServices;
 import com.hotelhub.services.UserServices;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:19007/" )
 public class FrontendController {
 
     @PostMapping("/users/create")
