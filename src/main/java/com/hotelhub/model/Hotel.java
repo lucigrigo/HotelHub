@@ -22,4 +22,7 @@ public class Hotel {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "photo")
+    private String photo;
 }
