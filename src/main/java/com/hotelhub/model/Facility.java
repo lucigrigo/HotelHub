@@ -17,9 +17,9 @@ public class Facility {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int facility_id;
 
-    @Column(name = "facility_id")
+    @Column(name = "name")
     private String name;
 
-    @Column(name = "facility_price")
+    @Column(name = "price")
     private int price;
 }

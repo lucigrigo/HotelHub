@@ -42,11 +42,25 @@ public class UserServices {
     }
 
     public static ResponseEntity<Object> getAllRooms(String hotel_id) {
-        //TODO
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasHotel(database, hotel_id))
+                return new ResponseEntity<>(DatabaseController.getAllRooms(database, hotel_id), null, HttpStatus.OK);
+            else
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static ResponseEntity<Object> getAllHotels() {
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            return new ResponseEntity<>(DatabaseController.getAllHotels(database), null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
