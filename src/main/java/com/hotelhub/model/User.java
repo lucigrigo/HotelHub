@@ -34,5 +34,5 @@ public class User {
     private boolean isAdmin;
 
     @Column(name = "hotel_admin")
-    private int hotel_admin;
+    private String hotel_admin;
 }

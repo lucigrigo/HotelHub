@@ -98,10 +98,8 @@ public class DatabaseController {
                     doc_is_admin = Objects.requireNonNull(document.getBoolean("isAdmin"));
                 }
 
-                int doc_hotel_admin = 0;
-                if (document.getLong("hotel_admin") != null) {
-                    doc_hotel_admin = Objects.requireNonNull(document.getLong("hotel_admin")).intValue();
-                }
+                String doc_hotel_admin = document.getString("hotel_admin");
+                assert doc_hotel_admin != null;
 
                 if (doc_password.equals(password)) {
                     return new User(document.getId(), document.getString("name"),
@@ -306,7 +304,7 @@ public class DatabaseController {
     }
 
     public static void deleteRoom(Firestore db, String room_id) {
-        ApiFuture<WriteResult> writeResult = db.collection("rooms").document(room_id).delete();
+        db.collection("rooms").document(room_id).delete();
     }
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
