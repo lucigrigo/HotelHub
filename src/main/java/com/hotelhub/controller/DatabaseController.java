@@ -210,7 +210,47 @@ public class DatabaseController {
         return hotels;
     }
 
+    public static boolean searchHotel(Firestore db, Hotel hotel) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("hotels").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_name = document.getString("name");
+            assert doc_name != null;
+            if (doc_name.equals(hotel.getName())) {
+                String doc_loc = document.getString("location");
+                assert doc_loc != null;
+                if (doc_loc.equals(hotel.getLocation()))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void addHotel(Firestore db, Hotel newHotel, String user_id) {
+        DocumentReference docRef = db.collection("hotels").document();
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", newHotel.getName());
+        data.put("location", newHotel.getLocation());
+        data.put("photo", newHotel.getPhoto());
+        String hotel_id = docRef.getId();
+        data.put("hotel_id", hotel_id);
+
+        docRef.set(data);
+
+        DocumentReference docRefAdmin = db.collection("users").document(user_id);
+        docRefAdmin.update("hotel_admin", hotel_id);
+    }
+
+    public static void deleteHotel(Firestore db, String hotel_id) {
+        ApiFuture<WriteResult> writeResult = db.collection("hotels").document(hotel_id).delete();
+    }
+
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
+
+
 }
