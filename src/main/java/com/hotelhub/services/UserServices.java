@@ -40,4 +40,13 @@ public class UserServices {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static ResponseEntity<Object> getAllRooms(String hotel_id) {
+        //TODO
+        return null;
+    }
+
+    public static ResponseEntity<Object> getAllHotels() {
+        return null;
+    }
 }

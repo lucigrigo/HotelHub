@@ -21,6 +21,7 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class DatabaseController {
+
     private static Firestore database = null;
 
     public static Firestore getDatabase() throws IOException, ExecutionException, InterruptedException {
@@ -88,7 +89,7 @@ public class DatabaseController {
                     doc_hotel_admin = Objects.requireNonNull(document.getLong("hotel_admin")).intValue();
                 }
 
-                if(doc_password.equals(password)) {
+                if (doc_password.equals(password)) {
                     return new User(document.getId(), document.getString("name"),
                             doc_email, doc_password, doc_is_admin, doc_hotel_admin);
                 }
