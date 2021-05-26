@@ -1,10 +1,11 @@
 package com.hotelhub.services;
 
+import com.hotelhub.model.Booking;
 import org.springframework.http.ResponseEntity;
 
 public class ClientServices {
 
-    public static ResponseEntity<Object> createBooking() {
+    public static ResponseEntity<Object> createBooking(Booking booking) {
         return null;
     }
 

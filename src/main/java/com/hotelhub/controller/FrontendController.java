@@ -1,5 +1,6 @@
 package com.hotelhub.controller;
 
+import com.hotelhub.model.Booking;
 import com.hotelhub.model.Hotel;
 import com.hotelhub.model.Room;
 import com.hotelhub.services.AdminServices;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 public class FrontendController {
 
     @PostMapping("/client/booking/create")
-    public ResponseEntity<Object> createBooking() {
-        return ClientServices.createBooking();
+    public ResponseEntity<Object> createBooking(
+            @RequestBody Booking booking
+    ) {
+        return ClientServices.createBooking(booking);
     }
 
-    @PostMapping("/client/booking/cancel")
+    @GetMapping("/client/booking/cancel")
     public ResponseEntity<Object> cancelBooking() {
         return ClientServices.cancelBooking();
     }
@@ -26,12 +29,12 @@ public class FrontendController {
         return ClientServices.accessFacilities();
     }
 
-    @PostMapping("/admin/approve/booking")
+    @GetMapping("/admin/booking/approve")
     public ResponseEntity<Object> approveBooking() {
         return AdminServices.approveBooking();
     }
 
-    @PostMapping("/admin/approve/cancel")
+    @PostMapping("/admin/booking/cancel")
     public ResponseEntity<Object> approveCancel() {
         return AdminServices.approveCancel();
     }
@@ -43,7 +46,7 @@ public class FrontendController {
         return AdminServices.addHotel(hotel, user_id);
     }
 
-    @PostMapping("/admin/actions/hotel/delete")
+    @GetMapping("/admin/actions/hotel/delete")
     public ResponseEntity<Object> deleteHotel(
             @RequestParam(name = "user_id") String user_id,
             @RequestParam(name = "hotel_id") String hotel_id) {
@@ -56,7 +59,7 @@ public class FrontendController {
         return AdminServices.addRoom(room);
     }
 
-    @PostMapping("/admin/actions/room/delete")
+    @GetMapping("/admin/actions/room/delete")
     public ResponseEntity<Object> deleteRoom(
             @RequestParam(name = "room_id") String room_id) {
         return AdminServices.deleteRoom(room_id);

@@ -1,18 +1,16 @@
 package com.hotelhub.controller;
 
 import com.google.api.core.ApiFuture;
+import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.firestore.*;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
 import com.hotelhub.model.Hotel;
 import com.hotelhub.model.Room;
 import com.hotelhub.model.User;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.auth.oauth2.GoogleCredentials;
 
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -306,6 +304,8 @@ public class DatabaseController {
     public static void deleteRoom(Firestore db, String room_id) {
         db.collection("rooms").document(room_id).delete();
     }
+
+
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();

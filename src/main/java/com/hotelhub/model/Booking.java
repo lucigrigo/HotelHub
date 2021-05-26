@@ -18,17 +18,17 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String booking_id;
 
-    @Column(name = "room_name")
-    private String room;
-
-    @Column(name = "room_id")
-    private int room_id;
+    @Column(name = "room")
+    private Room room;
 
     @Column(name = "user_id")
-    private long user_id;
+    private String user_id;
 
     @Column(name = "approved")
     private boolean approved;
+
+    @Column(name = "to_be_canceled")
+    private boolean to_be_canceled;
 
     @Column(name = "date_start")
     private Date date_start;
