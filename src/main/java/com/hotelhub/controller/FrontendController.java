@@ -11,21 +11,6 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class FrontendController {
 
-    @PostMapping("/users/create")
-    public ResponseEntity<Object> createUser(
-            @RequestBody User user
-    ) {
-        return UserServices.createUser(user);
-    }
-
-    @PostMapping("/users/login")
-    public ResponseEntity<Object> loginUser(
-            @RequestParam(name = "email") String email,
-            @RequestParam(name = "password") String password
-    ) {
-        return UserServices.loginUser(email, password);
-    }
-
     @PostMapping("/client/booking/create")
     public ResponseEntity<Object> createBooking() {
         return ClientServices.createBooking();

@@ -107,7 +107,7 @@ public class DatabaseController {
         data.put("name", newUser.getName());
         data.put("email", newUser.getEmail());
         data.put("password", newUser.getPassword());
-        data.put("is_admin", newUser.isAdmin());
+        data.put("isAdmin", newUser.isAdmin());
         if (newUser.isAdmin()) {
             data.put("hotel_admin", newUser.getHotel_admin());
         }
