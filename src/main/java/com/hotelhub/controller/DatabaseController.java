@@ -6,6 +6,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
+import com.hotelhub.model.Booking;
 import com.hotelhub.model.Hotel;
 import com.hotelhub.model.Room;
 import com.hotelhub.model.User;
@@ -306,8 +307,26 @@ public class DatabaseController {
         db.collection("rooms").document(room_id).delete();
     }
 
-    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
-        Firestore database = getDatabase();
+    public static void clientCancelBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        boolean doc_approved = Objects.requireNonNull(document.getBoolean("approved"));
+        if (doc_approved) {
+            docRef.update("to_be_canceled", true);
+        } else {
+            docRef.delete();
+        }
+
+    }
+
+    public static boolean searchBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        return document.exists();
     }
 
     public static boolean hasBooking(Firestore db, String booking_id)
@@ -353,5 +372,14 @@ public class DatabaseController {
 
     public static void adminCancelBooking(Firestore db, String booking_id) {
         db.collection("bookings").document(booking_id).delete();
+    }
+
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
+        Firestore database = getDatabase();
+    }
+
+    public static Booking createBooking(Firestore database, Booking booking) {
+        //TODO
+        return null;
     }
 }

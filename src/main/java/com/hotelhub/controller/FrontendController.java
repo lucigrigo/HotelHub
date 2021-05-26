@@ -20,8 +20,10 @@ public class FrontendController {
     }
 
     @GetMapping("/client/booking/cancel")
-    public ResponseEntity<Object> cancelBooking() {
-        return ClientServices.cancelBooking();
+    public ResponseEntity<Object> cancelBooking(
+            @RequestParam(name = "booking_id") String booking_id
+    ) {
+        return ClientServices.cancelBooking(booking_id);
     }
 
     @PostMapping("/client/facilities")
@@ -51,7 +53,8 @@ public class FrontendController {
     @GetMapping("/admin/actions/hotel/delete")
     public ResponseEntity<Object> deleteHotel(
             @RequestParam(name = "user_id") String user_id,
-            @RequestParam(name = "hotel_id") String hotel_id) {
+            @RequestParam(name = "hotel_id") String hotel_id
+    ) {
         return AdminServices.deleteHotel(user_id, hotel_id);
     }
 
