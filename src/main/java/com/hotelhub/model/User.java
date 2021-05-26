@@ -17,8 +17,6 @@ import javax.persistence.GenerationType;
 @Getter
 @Setter
 public class User {
-    private final int DEFAULT_ID = 0;
-
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
