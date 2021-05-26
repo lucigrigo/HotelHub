@@ -45,8 +45,9 @@ public class FrontendController {
 
     @PostMapping("/admin/actions/hotel/delete")
     public ResponseEntity<Object> deleteHotel(
-            @RequestParam(name = "user_id") String user_id) {
-        return AdminServices.deleteHotel(user_id);
+            @RequestParam(name = "user_id") String user_id,
+            @RequestParam(name = "hotel_id") String hotel_id) {
+        return AdminServices.deleteHotel(user_id, hotel_id);
     }
 
     @PostMapping("/admin/actions/room/add")

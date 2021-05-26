@@ -244,13 +244,16 @@ public class DatabaseController {
         docRefAdmin.update("hotel_admin", hotel_id);
     }
 
-    public static void deleteHotel(Firestore db, String hotel_id) {
+    public static void deleteHotel(Firestore db, String admin_id, String hotel_id) throws ExecutionException, InterruptedException {
         db.collection("hotels").document(hotel_id).delete();
+        DocumentReference docRef = db.collection("users").document(admin_id);
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("hotel_admin", FieldValue.delete());
+        docRef.update(updates);
     }
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
-
 
 }

@@ -36,11 +36,11 @@ public class AdminServices {
         }
     }
 
-    public static ResponseEntity<Object> deleteHotel(String hotel_id) {
+    public static ResponseEntity<Object> deleteHotel(String user_id, String hotel_id) {
         try {
             Firestore database = DatabaseController.getDatabase();
             if(DatabaseController.hasHotel(database, hotel_id)) {
-                DatabaseController.deleteHotel(database, hotel_id);
+                DatabaseController.deleteHotel(database, user_id, hotel_id);
                 return new ResponseEntity<>(true, null, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(false, null, HttpStatus.OK);
