@@ -30,13 +30,15 @@ public class FrontendController {
     }
 
     @GetMapping("/admin/booking/approve")
-    public ResponseEntity<Object> approveBooking() {
-        return AdminServices.approveBooking();
+    public ResponseEntity<Object> approveBooking(
+            @RequestParam(name = "booking_id") String booking_id) {
+        return AdminServices.approveBooking(booking_id);
     }
 
-    @PostMapping("/admin/booking/cancel")
-    public ResponseEntity<Object> approveCancel() {
-        return AdminServices.approveCancel();
+    @GetMapping("/admin/booking/cancel")
+    public ResponseEntity<Object> approveCancel(
+            @RequestParam(name = "booking_id") String booking_id) {
+        return AdminServices.cancelBooking(booking_id);
     }
 
     @PostMapping("/admin/actions/hotel/add")

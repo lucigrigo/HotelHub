@@ -1,2 +1,0 @@
-hotel cu lista de facilitati
-admin cu lista de hoteluri pe care le administreaza

@@ -8,16 +8,37 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class AdminServices {
 
-    public static ResponseEntity<Object> approveBooking() {
-        return null;
+    public static ResponseEntity<Object> approveBooking(String booking_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasBooking(database, booking_id)) {
+                DatabaseController.approveBooking(database, booking_id);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    public static ResponseEntity<Object> approveCancel() {
-        return null;
+    public static ResponseEntity<Object> cancelBooking(String booking_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasApprovedBooking(database, booking_id)) {
+                DatabaseController.adminCancelBooking(database, booking_id);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static ResponseEntity<Object> addHotel(Hotel hotel, String user_id) {
@@ -38,7 +59,7 @@ public class AdminServices {
     public static ResponseEntity<Object> deleteHotel(String user_id, String hotel_id) {
         try {
             Firestore database = DatabaseController.getDatabase();
-            if(DatabaseController.hasHotel(database, hotel_id)) {
+            if (DatabaseController.hasHotel(database, hotel_id)) {
                 DatabaseController.deleteHotel(database, user_id, hotel_id);
                 return new ResponseEntity<>(true, null, HttpStatus.OK);
             } else {

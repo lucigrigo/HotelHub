@@ -230,6 +230,7 @@ public class DatabaseController {
     public static void addHotel(Firestore db, Hotel newHotel, String user_id) {
         DocumentReference docRef = db.collection("hotels").document();
         Map<String, Object> data = new HashMap<>();
+
         data.put("name", newHotel.getName());
         data.put("location", newHotel.getLocation());
         data.put("photo", newHotel.getPhoto());
@@ -305,11 +306,52 @@ public class DatabaseController {
         db.collection("rooms").document(room_id).delete();
     }
 
-
-
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
 
+    public static boolean hasBooking(Firestore db, String booking_id)
+            throws IOException, ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
 
+        if (document.exists()) {
+            boolean doc_approved = false;
+            if (document.getBoolean("approved") != null) {
+                doc_approved = Objects.requireNonNull(document.getBoolean("approved"));
+            }
+
+            return !doc_approved;
+        }
+
+        return false;
+    }
+
+    public static void approveBooking(Firestore db, String booking_id) {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        docRef.update("approved", true);
+    }
+
+    public static boolean hasApprovedBooking(Firestore db, String booking_id)
+            throws IOException, ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        if (document.exists()) {
+            boolean doc_to_be_canceled = false;
+            if (document.getBoolean("to_be_canceled") != null) {
+                doc_to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+            }
+
+            return !doc_to_be_canceled;
+        }
+
+        return false;
+    }
+
+    public static void adminCancelBooking(Firestore db, String booking_id) {
+        db.collection("bookings").document(booking_id).delete();
+    }
 }
