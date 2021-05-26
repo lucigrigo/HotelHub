@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.couchbase.CouchbaseProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.xml.crypto.Data;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
@@ -51,15 +52,36 @@ public class AdminServices {
         }
     }
 
-    public static ResponseEntity<Object> alterFacility() {
-        return null;
+    public static ResponseEntity<Object> addRoom(Room room) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.checkRoomInHotel(database, room))
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+            else {
+                DatabaseController.addRoom(database, room);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            }
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static ResponseEntity<Object> deleteRoom(String room_id) {
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasRoom(database, room_id)) {
+                DatabaseController.deleteRoom(database, room_id);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    public static ResponseEntity<Object> addRoom(Room room) {
+    public static ResponseEntity<Object> alterFacility() {
         return null;
     }
 }

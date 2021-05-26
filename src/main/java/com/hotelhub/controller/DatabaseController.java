@@ -12,6 +12,7 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -210,7 +211,8 @@ public class DatabaseController {
         return hotels;
     }
 
-    public static boolean searchHotel(Firestore db, Hotel hotel) throws ExecutionException, InterruptedException {
+    public static boolean searchHotel(Firestore db, Hotel hotel)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("hotels").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -252,8 +254,64 @@ public class DatabaseController {
         docRef.update(updates);
     }
 
+    public static boolean checkRoomInHotel(Firestore db, Room room)
+            throws InterruptedException, ExecutionException {
+        ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_name = document.getString("name");
+            assert doc_name != null;
+
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(room.getHotel_id()) && doc_name.equals(room.getName()))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static void addRoom(Firestore db, Room room) {
+        DocumentReference docRef = db.collection("rooms").document();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("room_id", docRef.getId());
+        data.put("price", room.getPrice());
+        data.put("name", room.getName());
+        data.put("hotel_id", room.getHotel_id());
+        data.put("no_of_people", room.getNo_of_people());
+        data.put("type", room.getRoom_type());
+
+        docRef.set(data);
+    }
+
+    public static boolean hasRoom(Firestore db, String room_id)
+            throws InterruptedException, ExecutionException {
+        ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_room_id = document.getString("room_id");
+            assert doc_room_id != null;
+
+            if (doc_room_id.equals(room_id))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static void deleteRoom(Firestore db, String room_id) {
+        ApiFuture<WriteResult> writeResult = db.collection("rooms").document(room_id).delete();
+    }
+
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
+
 
 }
