@@ -245,7 +245,7 @@ public class DatabaseController {
     }
 
     public static void deleteHotel(Firestore db, String hotel_id) {
-        ApiFuture<WriteResult> writeResult = db.collection("hotels").document(hotel_id).delete();
+        db.collection("hotels").document(hotel_id).delete();
     }
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
