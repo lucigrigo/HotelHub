@@ -21,7 +21,6 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 public class DatabaseController {
-    private static int no_users;
     private static Firestore database = null;
 
     public static Firestore getDatabase() throws IOException, ExecutionException, InterruptedException {
@@ -35,7 +34,6 @@ public class DatabaseController {
                 .build();
         FirebaseApp.initializeApp(options);
         database = FirestoreClient.getFirestore();
-        getLastId(database);
         return database;
     }
 
@@ -91,7 +89,7 @@ public class DatabaseController {
                 }
 
                 if(doc_password.equals(password)) {
-                    return new User(Integer.parseInt(document.getId()), document.getString("name"),
+                    return new User(document.getId(), document.getString("name"),
                             doc_email, doc_password, doc_is_admin, doc_hotel_admin);
                 }
             }
@@ -101,30 +99,17 @@ public class DatabaseController {
 
     public static void addUser(Firestore db, User newUser)
             throws ExecutionException, InterruptedException {
-        no_users++;
-        DocumentReference docRef = db.collection("users").document(Integer.toString(no_users));
+        DocumentReference docRef = db.collection("users").document();
         Map<String, Object> data = new HashMap<>();
         data.put("name", newUser.getName());
         data.put("email", newUser.getEmail());
         data.put("password", newUser.getPassword());
         data.put("isAdmin", newUser.isAdmin());
+        data.put("id", docRef.getId());
         if (newUser.isAdmin()) {
             data.put("hotel_admin", newUser.getHotel_admin());
         }
         docRef.set(data);
-    }
-
-    private static void getLastId(Firestore db) throws ExecutionException, InterruptedException {
-        ApiFuture<QuerySnapshot> query = db.collection("users").get();
-        QuerySnapshot querySnapshot = query.get();
-        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
-        int max_id = 0;
-        for (QueryDocumentSnapshot document : documents) {
-            int doc_id = Integer.parseInt(document.getId());
-            if (doc_id > max_id) {
-                no_users = doc_id;
-            }
-        }
     }
 
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {

@@ -1,9 +1,7 @@
 package com.hotelhub.controller;
 
-import com.hotelhub.model.User;
 import com.hotelhub.services.AdminServices;
 import com.hotelhub.services.ClientServices;
-import com.hotelhub.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
