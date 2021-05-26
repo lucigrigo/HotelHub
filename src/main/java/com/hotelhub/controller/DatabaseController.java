@@ -80,8 +80,8 @@ public class DatabaseController {
                 assert doc_password != null;
 
                 boolean doc_is_admin = false;
-                if (document.getBoolean("is_admin") != null) {
-                    doc_is_admin = Objects.requireNonNull(document.getBoolean("is_admin"));
+                if (document.getBoolean("isAdmin") != null) {
+                    doc_is_admin = Objects.requireNonNull(document.getBoolean("isAdmin"));
                 }
 
                 int doc_hotel_admin = 0;
@@ -105,7 +105,7 @@ public class DatabaseController {
         data.put("name", newUser.getName());
         data.put("email", newUser.getEmail());
         data.put("password", newUser.getPassword());
-        data.put("is_admin", newUser.isAdmin());
+        data.put("isAdmin", newUser.isAdmin());
         data.put("user_id", docRef.getId());
         if (newUser.isAdmin()) {
             data.put("hotel_admin", newUser.getHotel_admin());

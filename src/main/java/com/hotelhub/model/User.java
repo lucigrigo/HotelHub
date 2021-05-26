@@ -30,7 +30,7 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "is_admin")
+    @Column(name = "isAdmin")
     private boolean isAdmin;
 
     @Column(name = "hotel_admin")
