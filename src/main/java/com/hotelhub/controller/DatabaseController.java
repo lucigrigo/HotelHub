@@ -281,7 +281,7 @@ public class DatabaseController {
         data.put("name", room.getName());
         data.put("hotel_id", room.getHotel_id());
         data.put("no_of_people", room.getNo_of_people());
-        data.put("type", room.getRoom_type());
+        data.put("type", room.getType());
 
         docRef.set(data);
     }
@@ -379,8 +379,82 @@ public class DatabaseController {
         db.collection("bookings").document(booking_id).delete();
     }
 
+    public static List<Hotel> getLocationHotels(Firestore db, String location) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("hotels").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Hotel> hotels = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_location = document.getString("location");
+            assert doc_location != null;
+
+            if (doc_location.equals(location)) {
+                String hotel_id = document.getString("hotel_id");
+                assert hotel_id != null;
+
+                String name = document.getString("name");
+                assert name != null;
+
+                String photo = document.getString("photo");
+                assert photo != null;
+
+                hotels.add(new Hotel(hotel_id, location, name, photo));
+            }
+        }
+        return hotels;
+    }
+
+    public static List<Room> getHotelRooms(Firestore db, String hotel_id, int no_of_people, String type) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Room> rooms = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                int doc_no_of_people = 0;
+                if (document.getLong("no_of_people") != null)
+                    doc_no_of_people = Objects.requireNonNull(document.getLong("no_of_people")).intValue();
+
+                String doc_type = document.getString("type");
+                assert doc_type != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                int price = 0;
+                if (document.getLong("price") != null) {
+                    price = Objects.requireNonNull(document.getLong("price")).intValue();
+                }
+
+                String name = document.getString("name");
+                assert name != null;
+
+                if (no_of_people < 1 && type == null) {
+                    rooms.add(new Room(room_id, price, name, hotel_id, doc_no_of_people, doc_type));
+                } else if (no_of_people >= 1) {
+                    if (type != null) {
+                        if (type.equals(doc_type) && no_of_people == doc_no_of_people) {
+                            rooms.add(new Room(room_id, price, name, hotel_id, doc_no_of_people, doc_type));
+                        }
+                    } else if (no_of_people == doc_no_of_people) {
+                        rooms.add(new Room(room_id, price, name, hotel_id, doc_no_of_people, doc_type));
+                    }
+                } else {
+                    if (type.equals(doc_type)) {
+                        rooms.add(new Room(room_id, price, name, hotel_id, doc_no_of_people, doc_type));
+                    }
+                }
+            }
+        }
+        return rooms;
+    }
+
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
-
 }

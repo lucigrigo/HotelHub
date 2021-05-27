@@ -30,5 +30,5 @@ public class Room {
     private int no_of_people;
 
     @Column(name = "type")
-    private String room_type;
+    private String type;
 }

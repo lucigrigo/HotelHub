@@ -19,8 +19,10 @@ public class FrontendController {
 
     @GetMapping("/client/hotel/rooms")
     public ResponseEntity<Object> getHotelRooms(
-            @RequestParam(name = "hotel_id") String hotel_id) {
-        return ClientServices.getHotelRooms(hotel_id);
+            @RequestParam(name = "hotel_id") String hotel_id,
+            @RequestParam(name = "no_of_people") int no_of_people,
+            @RequestParam(name = "type") String type) {
+        return ClientServices.getHotelRooms(hotel_id, no_of_people, type);
     }
 
     @PostMapping("/client/booking/create")
