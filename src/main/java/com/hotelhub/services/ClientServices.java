@@ -9,20 +9,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class ClientServices {
 
-    public static ResponseEntity<Object> createBooking(Booking booking) {
+    public static ResponseEntity<Object> createBooking(String user_id, Room room, Date start_date, Date end_date) {
         try {
             Firestore database = DatabaseController.getDatabase();
-            Booking newBooking = DatabaseController.createBooking(database, booking);
-            if (newBooking != null) {
-                return new ResponseEntity<>(booking, null, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(null, null, HttpStatus.OK);
-            }
+            Booking newBooking = DatabaseController.createBooking(database, user_id, room, start_date, end_date);
+            return new ResponseEntity<>(newBooking, null, HttpStatus.OK);
         } catch (IOException | ExecutionException | InterruptedException exception) {
             exception.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

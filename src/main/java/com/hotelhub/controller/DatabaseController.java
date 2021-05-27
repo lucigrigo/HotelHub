@@ -315,9 +315,23 @@ public class DatabaseController {
         return document.exists();
     }
 
-    public static Booking createBooking(Firestore database, Booking booking) {
-        //TODO
-        return null;
+    public static Booking createBooking(Firestore db, String user_id, Room room, Date start_date, Date end_date) {
+        DocumentReference docRef = db.collection("bookings").document();
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("booking_id", docRef.getId());
+        data.put("room_id", room.getRoom_id());
+        data.put("hotel_id", room.getHotel_id());
+        data.put("user_id", user_id);
+        data.put("approved", false);
+        data.put("to_be_canceled", false);
+        data.put("start_date", start_date);
+        data.put("end_date", end_date);
+
+        docRef.set(data);
+
+        return new Booking(docRef.getId(), room.getRoom_id(), room.getHotel_id(), user_id,
+                false, false, start_date, end_date);
     }
 
     public static void clientCancelBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
@@ -733,5 +747,22 @@ public class DatabaseController {
         }
 
         return availableRooms;
+    }
+
+    public static Hotel getHotelById(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("hotels").document(hotel_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        String location = document.getString("location");
+        assert location != null;
+
+        String name = document.getString("name");
+        assert name != null;
+
+        String photo = document.getString("photo");
+        assert photo != null;
+
+        return new Hotel(hotel_id, location, name, photo);
     }
 }

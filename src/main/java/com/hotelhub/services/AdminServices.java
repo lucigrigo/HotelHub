@@ -103,4 +103,18 @@ public class AdminServices {
     public static ResponseEntity<Object> alterFacility() {
         return null;
     }
+
+    public static ResponseEntity<Object> getHotelById(String hotel_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasHotel(database, hotel_id)) {
+                Hotel hotel = DatabaseController.getHotelById(database, hotel_id);
+                return new ResponseEntity<>(hotel, null, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
