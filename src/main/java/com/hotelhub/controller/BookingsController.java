@@ -41,4 +41,10 @@ public class BookingsController {
     ) {
         return BookingsServices.getAvailableRooms(hotel_id, start_date, end_date);
     }
+
+    @GetMapping("/bookings/rooms/get")
+    public ResponseEntity<Object> getRoomById(
+            @RequestParam(name = "room_id") String room_id) {
+        return BookingsServices.getRoomById(room_id);
+    }
 }

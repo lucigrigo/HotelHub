@@ -457,4 +457,281 @@ public class DatabaseController {
     public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
     }
+
+    public static List<Booking> getHotelConfirmedBookings(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Booking> bookings = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String booking_id = document.getString("booking_id");
+                assert booking_id != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                String user_id = document.getString("user_id");
+                assert user_id != null;
+
+                boolean to_be_canceled = false;
+                if (document.getBoolean("to_be_canceled") != null) {
+                    to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+                }
+
+                Date start_date = document.getDate("start_date");
+                assert start_date != null;
+
+                Date end_date = document.getDate("end_date");
+                assert end_date != null;
+
+                boolean approved = false;
+                if (document.getBoolean("approved") != null) {
+                    approved = Objects.requireNonNull(document.getBoolean("approved"));
+                }
+
+                if (approved) {
+                    bookings.add(new Booking(booking_id, room_id, hotel_id,
+                            user_id, true, to_be_canceled, start_date, end_date));
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public static List<Booking> getHotelToDeleteBookings(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Booking> bookings = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String booking_id = document.getString("booking_id");
+                assert booking_id != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                String user_id = document.getString("user_id");
+                assert user_id != null;
+
+                boolean to_be_canceled = false;
+                if (document.getBoolean("to_be_canceled") != null) {
+                    to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+                }
+
+                Date start_date = document.getDate("start_date");
+                assert start_date != null;
+
+                Date end_date = document.getDate("end_date");
+                assert end_date != null;
+
+                boolean approved = false;
+                if (document.getBoolean("approved") != null) {
+                    approved = Objects.requireNonNull(document.getBoolean("approved"));
+                }
+
+                if (to_be_canceled) {
+                    bookings.add(new Booking(booking_id, room_id, hotel_id,
+                            user_id, approved, true, start_date, end_date));
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public static List<Booking> getUserConfirmedBookings(Firestore db, String user_id) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Booking> bookings = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_user_id = document.getString("user_id");
+            assert doc_user_id != null;
+
+            if (doc_user_id.equals(user_id)) {
+                String booking_id = document.getString("booking_id");
+                assert booking_id != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                String hotel_id = document.getString("hotel_id");
+                assert hotel_id != null;
+
+                boolean to_be_canceled = false;
+                if (document.getBoolean("to_be_canceled") != null) {
+                    to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+                }
+
+                Date start_date = document.getDate("start_date");
+                assert start_date != null;
+
+                Date end_date = document.getDate("end_date");
+                assert end_date != null;
+
+                boolean approved = false;
+                if (document.getBoolean("approved") != null) {
+                    approved = Objects.requireNonNull(document.getBoolean("approved"));
+                }
+
+                if (approved) {
+                    bookings.add(new Booking(booking_id, room_id, hotel_id,
+                            user_id, true, to_be_canceled, start_date, end_date));
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public static List<Booking> getUserPendingBookings(Firestore db, String user_id) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Booking> bookings = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_user_id = document.getString("user_id");
+            assert doc_user_id != null;
+
+            if (doc_user_id.equals(user_id)) {
+                String booking_id = document.getString("booking_id");
+                assert booking_id != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                String hotel_id = document.getString("hotel_id");
+                assert hotel_id != null;
+
+                boolean to_be_canceled = false;
+                if (document.getBoolean("to_be_canceled") != null) {
+                    to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+                }
+
+                Date start_date = document.getDate("start_date");
+                assert start_date != null;
+
+                Date end_date = document.getDate("end_date");
+                assert end_date != null;
+
+                boolean approved = false;
+                if (document.getBoolean("approved") != null) {
+                    approved = Objects.requireNonNull(document.getBoolean("approved"));
+                }
+
+                if (to_be_canceled) {
+                    bookings.add(new Booking(booking_id, room_id, hotel_id,
+                            user_id, approved, true, start_date, end_date));
+                }
+            }
+        }
+        return bookings;
+    }
+
+    public static Room getRoomById(Firestore db, String room_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("rooms").document(room_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        int no_of_people = 0;
+        if (document.getLong("no_of_people") != null)
+            no_of_people = Objects.requireNonNull(document.getLong("no_of_people")).intValue();
+
+        String type = document.getString("type");
+        assert type != null;
+
+        String hotel_id = document.getString("hotel_id");
+        assert hotel_id != null;
+
+        int price = 0;
+        if (document.getLong("price") != null) {
+            price = Objects.requireNonNull(document.getLong("price")).intValue();
+        }
+
+        String name = document.getString("name");
+        assert name != null;
+
+        return new Room(room_id, price, name, hotel_id, no_of_people, type);
+    }
+
+    private static List<String> getUnavailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date) throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<String> unavailableRooms = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                Date doc_start_date = document.getDate("start_date");
+                assert doc_start_date != null;
+
+                Date doc_end_date = document.getDate("end_date");
+                assert doc_end_date != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                if (doc_end_date.after(start_date) || doc_start_date.before(end_date)) {
+                    unavailableRooms.add(room_id);
+                }
+            }
+        }
+        return unavailableRooms;
+    }
+
+    public static List<Room> getAvailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date) throws ExecutionException, InterruptedException {
+        List<String> unavailableRooms = getUnavailableRooms(db, hotel_id, start_date, end_date);
+        ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Room> availableRooms = new ArrayList<>();
+        Map<String, Boolean> roomTypes = new HashMap<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                if (!unavailableRooms.contains(room_id)) {
+                    String type = document.getString("type");
+                    assert type != null;
+                    if (!roomTypes.containsKey(type)) {
+                        roomTypes.put(type, true);
+
+                        int no_of_people = 0;
+                        if (document.getLong("no_of_people") != null)
+                            no_of_people = Objects.requireNonNull(document.getLong("no_of_people")).intValue();
+
+                        int price = 0;
+                        if (document.getLong("price") != null) {
+                            price = Objects.requireNonNull(document.getLong("price")).intValue();
+                        }
+
+                        String name = document.getString("name");
+                        assert name != null;
+
+                        availableRooms.add(new Room(room_id, price, name, hotel_id, no_of_people, type));
+                    }
+                }
+            }
+        }
+
+        return availableRooms;
+    }
 }

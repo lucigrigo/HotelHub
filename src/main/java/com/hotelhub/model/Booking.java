@@ -18,8 +18,11 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String booking_id;
 
-    @Column(name = "room")
-    private Room room;
+    @Column(name = "room_id")
+    private String room_id;
+
+    @Column(name = "hotel_id")
+    private String hotel_id;
 
     @Column(name = "user_id")
     private String user_id;
@@ -30,9 +33,9 @@ public class Booking {
     @Column(name = "to_be_canceled")
     private boolean to_be_canceled;
 
-    @Column(name = "date_start")
-    private Date date_start;
+    @Column(name = "start_date")
+    private Date start_date;
 
-    @Column(name = "date_end")
-    private Date date_end;
+    @Column(name = "end_date")
+    private Date end_date;
 }
