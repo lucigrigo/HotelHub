@@ -1,5 +1,6 @@
 package com.hotelhub.controller;
 
+import com.hotelhub.services.BookingsServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -7,49 +8,37 @@ import java.util.Date;
 
 @RestController
 @CrossOrigin
-public class UtilsController {
-    @GetMapping("/utils/get/hotels")
-    public ResponseEntity<Object> getHotels(
-            @RequestParam(name = "location") String location) {
-        return null;
-    }
-
-    @GetMapping("/utils/get/hotel/rooms")
-    public ResponseEntity<Object> getRooms(
-            @RequestParam(name = "hotel_id") String hotel_id) {
-        return null;
-    }
-
-    @GetMapping("/utils/get/hotel/bookings/confirmed")
+public class BookingsController {
+    @GetMapping("/bookings/hotel/confirmed")
     public ResponseEntity<Object> getHotelConfirmedBookings(
             @RequestParam(name = "hotel_id") String hotel_id) {
-        return null;
+        return BookingsServices.getHotelConfirmedBookings(hotel_id);
     }
 
-    @GetMapping("/utils/get/hotel/bookings/to_delete")
-    public ResponseEntity<Object> getToDeleteBookings(
+    @GetMapping("/bookings/hotel/to_delete")
+    public ResponseEntity<Object> getHotelToDeleteBookings(
             @RequestParam(name = "hotel_id") String hotel_id) {
-        return null;
+        return BookingsServices.getHotelToDeleteBookings(hotel_id);
     }
 
-    @GetMapping("/utils/get/user/bookings/confirmed")
+    @GetMapping("/bookings/user/confirmed")
     public ResponseEntity<Object> getUserConfirmedBookings(
             @RequestParam(name = "hotel_id") String user_id) {
-        return null;
+        return BookingsServices.getUserConfirmedBookings(user_id);
     }
 
-    @GetMapping("/utils/get/user/bookings/pending")
+    @GetMapping("/bookings/user/pending")
     public ResponseEntity<Object> getUserPendingBookings(
             @RequestParam(name = "hotel_id") String user_id) {
-        return null;
+        return BookingsServices.getUserPendingBookings(user_id);
     }
 
-    @GetMapping("/utils/get/rooms/available")
+    @GetMapping("/bookings/rooms/available")
     public ResponseEntity<Object> getAvailableRooms(
             @RequestParam(name = "hotel_id") String hotel_id,
             @RequestParam(name = "start_date") Date start_date,
             @RequestParam(name = "end_date") Date end_date
     ) {
-        return null;
+        return BookingsServices.getAvailableRooms(hotel_id, start_date, end_date);
     }
 }
