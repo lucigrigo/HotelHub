@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class BookingsServices {
+
     public static ResponseEntity<Object> getHotelConfirmedBookings(String hotel_id) {
         try {
             Firestore database = DatabaseController.getDatabase();

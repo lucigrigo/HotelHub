@@ -13,6 +13,7 @@ import java.util.Date;
 @RestController
 @CrossOrigin
 public class FrontendController {
+
     @GetMapping("/client/location/hotels")
     public ResponseEntity<Object> getLocationHotels(
             @RequestParam(name = "location") String location) {
@@ -32,21 +33,14 @@ public class FrontendController {
             @RequestBody Room room,
             @RequestParam(name = "user_id") String user_id,
             @RequestParam(name = "start_date") Date start_date,
-            @RequestParam(name = "end_date") Date end_date
-    ) {
+            @RequestParam(name = "end_date") Date end_date) {
         return ClientServices.createBooking(user_id, room, start_date, end_date);
     }
 
     @GetMapping("/client/booking/cancel")
     public ResponseEntity<Object> cancelBooking(
-            @RequestParam(name = "booking_id") String booking_id
-    ) {
+            @RequestParam(name = "booking_id") String booking_id) {
         return ClientServices.cancelBooking(booking_id);
-    }
-
-    @PostMapping("/client/facilities")
-    public ResponseEntity<Object> accessFacilities() {
-        return ClientServices.accessFacilities();
     }
 
     @GetMapping("/admin/booking/approve")
@@ -77,8 +71,7 @@ public class FrontendController {
     @GetMapping("/admin/actions/hotel/delete")
     public ResponseEntity<Object> deleteHotel(
             @RequestParam(name = "user_id") String user_id,
-            @RequestParam(name = "hotel_id") String hotel_id
-    ) {
+            @RequestParam(name = "hotel_id") String hotel_id) {
         return AdminServices.deleteHotel(user_id, hotel_id);
     }
 
@@ -97,5 +90,10 @@ public class FrontendController {
     @PostMapping("/admin/actions/alter_facility")
     public ResponseEntity<Object> alterFacility() {
         return AdminServices.alterFacility();
+    }
+
+    @PostMapping("/client/facilities")
+    public ResponseEntity<Object> accessFacilities() {
+        return ClientServices.accessFacilities();
     }
 }

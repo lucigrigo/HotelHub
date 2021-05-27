@@ -9,6 +9,7 @@ import java.util.Date;
 @RestController
 @CrossOrigin
 public class BookingsController {
+    
     @GetMapping("/bookings/hotel/confirmed")
     public ResponseEntity<Object> getHotelConfirmedBookings(
             @RequestParam(name = "hotel_id") String hotel_id) {
@@ -37,8 +38,7 @@ public class BookingsController {
     public ResponseEntity<Object> getAvailableRooms(
             @RequestParam(name = "hotel_id") String hotel_id,
             @RequestParam(name = "start_date") Date start_date,
-            @RequestParam(name = "end_date") Date end_date
-    ) {
+            @RequestParam(name = "end_date") Date end_date) {
         return BookingsServices.getAvailableRooms(hotel_id, start_date, end_date);
     }
 

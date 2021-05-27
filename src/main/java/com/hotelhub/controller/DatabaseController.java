@@ -244,7 +244,8 @@ public class DatabaseController {
         docRefAdmin.update("hotel_admin", hotel_id);
     }
 
-    public static void deleteHotel(Firestore db, String admin_id, String hotel_id) throws ExecutionException, InterruptedException {
+    public static void deleteHotel(Firestore db, String admin_id, String hotel_id)
+            throws ExecutionException, InterruptedException {
         db.collection("hotels").document(hotel_id).delete();
         DocumentReference docRef = db.collection("users").document(admin_id);
         Map<String, Object> updates = new HashMap<>();
@@ -307,7 +308,8 @@ public class DatabaseController {
         db.collection("rooms").document(room_id).delete();
     }
 
-    public static boolean searchBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
+    public static boolean searchBooking(Firestore db, String booking_id)
+            throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("bookings").document(booking_id);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
@@ -334,7 +336,8 @@ public class DatabaseController {
                 false, false, start_date, end_date);
     }
 
-    public static void clientCancelBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
+    public static void clientCancelBooking(Firestore db, String booking_id)
+            throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("bookings").document(booking_id);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
@@ -393,7 +396,8 @@ public class DatabaseController {
         db.collection("bookings").document(booking_id).delete();
     }
 
-    public static List<Hotel> getLocationHotels(Firestore db, String location) throws ExecutionException, InterruptedException {
+    public static List<Hotel> getLocationHotels(Firestore db, String location)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("hotels").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -419,7 +423,8 @@ public class DatabaseController {
         return hotels;
     }
 
-    public static List<Room> getHotelRooms(Firestore db, String hotel_id, int no_of_people, String type) throws ExecutionException, InterruptedException {
+    public static List<Room> getHotelRooms(Firestore db, String hotel_id, int no_of_people, String type)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -468,11 +473,8 @@ public class DatabaseController {
         return rooms;
     }
 
-    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
-        Firestore database = getDatabase();
-    }
-
-    public static List<Booking> getHotelConfirmedBookings(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+    public static List<Booking> getHotelConfirmedBookings(Firestore db, String hotel_id)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -517,7 +519,8 @@ public class DatabaseController {
         return bookings;
     }
 
-    public static List<Booking> getHotelToDeleteBookings(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+    public static List<Booking> getHotelToDeleteBookings(Firestore db, String hotel_id)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -562,7 +565,8 @@ public class DatabaseController {
         return bookings;
     }
 
-    public static List<Booking> getUserConfirmedBookings(Firestore db, String user_id) throws ExecutionException, InterruptedException {
+    public static List<Booking> getUserConfirmedBookings(Firestore db, String user_id)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -607,7 +611,8 @@ public class DatabaseController {
         return bookings;
     }
 
-    public static List<Booking> getUserPendingBookings(Firestore db, String user_id) throws ExecutionException, InterruptedException {
+    public static List<Booking> getUserPendingBookings(Firestore db, String user_id)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -652,7 +657,8 @@ public class DatabaseController {
         return bookings;
     }
 
-    public static Room getRoomById(Firestore db, String room_id) throws ExecutionException, InterruptedException {
+    public static Room getRoomById(Firestore db, String room_id)
+            throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("rooms").document(room_id);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
@@ -678,7 +684,8 @@ public class DatabaseController {
         return new Room(room_id, price, name, hotel_id, no_of_people, type);
     }
 
-    private static List<String> getUnavailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date) throws ExecutionException, InterruptedException {
+    private static List<String> getUnavailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date)
+            throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
         QuerySnapshot querySnapshot = query.get();
         List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
@@ -706,7 +713,8 @@ public class DatabaseController {
         return unavailableRooms;
     }
 
-    public static List<Room> getAvailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date) throws ExecutionException, InterruptedException {
+    public static List<Room> getAvailableRooms(Firestore db, String hotel_id, Date start_date, Date end_date)
+            throws ExecutionException, InterruptedException {
         List<String> unavailableRooms = getUnavailableRooms(db, hotel_id, start_date, end_date);
         ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
         QuerySnapshot querySnapshot = query.get();
@@ -749,7 +757,8 @@ public class DatabaseController {
         return availableRooms;
     }
 
-    public static Hotel getHotelById(Firestore db, String hotel_id) throws ExecutionException, InterruptedException {
+    public static Hotel getHotelById(Firestore db, String hotel_id)
+            throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("hotels").document(hotel_id);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
@@ -764,5 +773,10 @@ public class DatabaseController {
         assert photo != null;
 
         return new Hotel(hotel_id, location, name, photo);
+    }
+
+    public static void main(String[] args)
+            throws IOException, ExecutionException, InterruptedException {
+        Firestore database = getDatabase();
     }
 }
