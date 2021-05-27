@@ -307,6 +307,19 @@ public class DatabaseController {
         db.collection("rooms").document(room_id).delete();
     }
 
+    public static boolean searchBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("bookings").document(booking_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        return document.exists();
+    }
+
+    public static Booking createBooking(Firestore database, Booking booking) {
+        //TODO
+        return null;
+    }
+
     public static void clientCancelBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
         DocumentReference docRef = db.collection("bookings").document(booking_id);
         ApiFuture<DocumentSnapshot> future = docRef.get();
@@ -319,14 +332,6 @@ public class DatabaseController {
             docRef.delete();
         }
 
-    }
-
-    public static boolean searchBooking(Firestore db, String booking_id) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = db.collection("bookings").document(booking_id);
-        ApiFuture<DocumentSnapshot> future = docRef.get();
-        DocumentSnapshot document = future.get();
-
-        return document.exists();
     }
 
     public static boolean hasBooking(Firestore db, String booking_id)
@@ -378,8 +383,4 @@ public class DatabaseController {
         Firestore database = getDatabase();
     }
 
-    public static Booking createBooking(Firestore database, Booking booking) {
-        //TODO
-        return null;
-    }
 }

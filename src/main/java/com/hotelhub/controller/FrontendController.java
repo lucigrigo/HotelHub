@@ -11,6 +11,17 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 public class FrontendController {
+    @GetMapping("/client/location/hotels")
+    public ResponseEntity<Object> getLocationHotels(
+            @RequestParam(name = "location") String location) {
+        return ClientServices.getLocationHotels(location);
+    }
+
+    @GetMapping("/client/hotel/rooms")
+    public ResponseEntity<Object> getHotelRooms(
+            @RequestParam(name = "hotel_id") String hotel_id) {
+        return ClientServices.getHotelRooms(hotel_id);
+    }
 
     @PostMapping("/client/booking/create")
     public ResponseEntity<Object> createBooking(

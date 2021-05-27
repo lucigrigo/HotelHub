@@ -44,4 +44,14 @@ public class ClientServices {
     public static ResponseEntity<Object> accessFacilities() {
         return null;
     }
+
+    public static ResponseEntity<Object> getLocationHotels(String location) {
+        //TODO
+        return null;
+    }
+
+    public static ResponseEntity<Object> getHotelRooms(String hotel_id) {
+        //TODO
+        return null;
+    }
 }
