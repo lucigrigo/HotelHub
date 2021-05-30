@@ -117,4 +117,18 @@ public class AdminServices {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static ResponseEntity<Object> deleteFacility(String facility_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasFacility(database, facility_id)) {
+                DatabaseController.deleteFacility(database, facility_id);
+                return new ResponseEntity<>(true, null, HttpStatus.OK);
+            } else
+                return new ResponseEntity<>(false, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

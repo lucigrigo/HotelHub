@@ -15,7 +15,10 @@ import javax.persistence.*;
 public class Facility {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int facility_id;
+    private String facility_id;
+
+    @Column
+    private String hotel_id;
 
     @Column(name = "name")
     private String name;

@@ -6,10 +6,7 @@ import com.google.cloud.firestore.*;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.cloud.FirestoreClient;
-import com.hotelhub.model.Booking;
-import com.hotelhub.model.Hotel;
-import com.hotelhub.model.Room;
-import com.hotelhub.model.User;
+import com.hotelhub.model.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.FileInputStream;
@@ -778,5 +775,130 @@ public class DatabaseController {
     public static void main(String[] args)
             throws IOException, ExecutionException, InterruptedException {
         Firestore database = getDatabase();
+    }
+
+    public static List<Facility> getAllFacilities(Firestore db)
+            throws IOException, ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("facilities").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Facility> facilities = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String facility_id = document.getString("facility_id");
+            assert facility_id != null;
+
+            String hotel_id = document.getString("hotel_id");
+            assert hotel_id != null;
+
+            String name = document.getString("name");
+            assert name != null;
+
+            int price = 0;
+            if (document.getLong("price") != null) {
+                price = Objects.requireNonNull(document.getLong("price")).intValue();
+            }
+
+            String photo = document.getString("photo");
+            assert photo != null;
+
+            facilities.add(new Facility(facility_id, hotel_id, name, price, photo));
+        }
+
+        return facilities;
+    }
+
+    public static List<Facility> getFacilitiesByHotel(Firestore db, String hotel_id)
+            throws IOException, ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("facilities").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Facility> facilities = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+
+            String doc_hotel_id = document.getString("hotel_id");
+            assert hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String facility_id = document.getString("facility_id");
+                assert facility_id != null;
+
+                String name = document.getString("name");
+                assert name != null;
+
+                int price = 0;
+                if (document.getLong("price") != null) {
+                    price = Objects.requireNonNull(document.getLong("price")).intValue();
+                }
+
+                String photo = document.getString("photo");
+                assert photo != null;
+
+                facilities.add(new Facility(facility_id, hotel_id, name, price, photo));
+            }
+        }
+
+        return facilities;
+    }
+
+    public static boolean hasFacility(Firestore db, String facility_id)
+            throws IOException, ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("facilities").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_facility_id = document.getString("facility_id");
+            assert doc_facility_id != null;
+
+            if (doc_facility_id.equals(facility_id))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static void deleteFacility(Firestore db, String facility_id) {
+        db.collection("facilities").document(facility_id).delete();
+    }
+
+    public static Room getFirstRoom(Firestore db, String hotel_id)
+            throws IOException, ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("rooms").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String type = document.getString("type");
+                assert type != null;
+
+                int no_of_people = 0;
+                if (document.getLong("no_of_people") != null) {
+                    no_of_people = Objects.requireNonNull(document.getLong("no_of_people")).intValue();
+                }
+
+                if (no_of_people == 2 && type.equals("premium")) {
+                    int price = 0;
+                    if (document.getLong("price") != null) {
+                        price = Objects.requireNonNull(document.getLong("price")).intValue();
+                    }
+
+                    String room_id = document.getString("room_id");
+                    assert room_id != null;
+
+                    String name = document.getString("name");
+                    assert name != null;
+
+                    return new Room(room_id, price, name, hotel_id, no_of_people, type);
+                }
+            }
+        }
+
+        return null;
     }
 }

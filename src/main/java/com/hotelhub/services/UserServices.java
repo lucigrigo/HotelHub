@@ -1,5 +1,6 @@
 package com.hotelhub.services;
 
+import com.google.api.Http;
 import com.google.cloud.firestore.Firestore;
 import com.hotelhub.controller.DatabaseController;
 import com.hotelhub.model.User;
@@ -65,22 +66,38 @@ public class UserServices {
     }
 
     public static ResponseEntity<Object> firstRoom(String hotel_id) {
-        // TODO
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasHotel(database, hotel_id))
+                return new ResponseEntity<>(DatabaseController.getFirstRoom(database, hotel_id), null, HttpStatus.OK);
+            else
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static ResponseEntity<Object> getAllFacilities() {
-        // TODO
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            return new ResponseEntity<>(DatabaseController.getAllFacilities(database), null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     public static ResponseEntity<Object> getFacilitiesByHotel(String hotel_id) {
-        // TODO
-        return null;
-    }
-
-    public static ResponseEntity<Object> deleteFacility(String facility_id) {
-        // TODO
-        return null;
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasHotel(database, hotel_id))
+                return new ResponseEntity<>(DatabaseController.getFacilitiesByHotel(database, hotel_id), null, HttpStatus.OK);
+            else
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

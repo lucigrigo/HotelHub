@@ -5,6 +5,7 @@ import com.hotelhub.model.Hotel;
 import com.hotelhub.model.Room;
 import com.hotelhub.services.AdminServices;
 import com.hotelhub.services.ClientServices;
+import com.hotelhub.services.UserServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -95,5 +96,11 @@ public class FrontendController {
     @PostMapping("/client/facilities")
     public ResponseEntity<Object> accessFacilities() {
         return ClientServices.accessFacilities();
+    }
+
+    @GetMapping("/users/actions/facility/delete")
+    public ResponseEntity<Object> deleteFacility(
+            @RequestParam(name = "facility_id") String facility_id) {
+        return AdminServices.deleteFacility(facility_id);
     }
 }

@@ -48,10 +48,4 @@ public class UserController {
             @RequestParam(name = "hotel_id") String hotel_id) {
         return UserServices.getFacilitiesByHotel(hotel_id);
     }
-
-    @GetMapping("/users/actions/delete_facility")
-    public ResponseEntity<Object> deleteFacility(
-            @RequestParam(name = "facility_id") String facility_id) {
-        return UserServices.deleteFacility(facility_id);
-    }
 }
