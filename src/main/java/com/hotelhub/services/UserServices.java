@@ -63,4 +63,24 @@ public class UserServices {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static ResponseEntity<Object> firstRoom(String hotel_id) {
+        // TODO
+        return null;
+    }
+
+    public static ResponseEntity<Object> getAllFacilities() {
+        // TODO
+        return null;
+    }
+
+    public static ResponseEntity<Object> getFacilitiesByHotel(String hotel_id) {
+        // TODO
+        return null;
+    }
+
+    public static ResponseEntity<Object> deleteFacility(String facility_id) {
+        // TODO
+        return null;
+    }
 }

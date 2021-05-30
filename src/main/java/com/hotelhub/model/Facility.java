@@ -22,4 +22,7 @@ public class Facility {
 
     @Column(name = "price")
     private int price;
+
+    @Column(name = "photo")
+    private String photo;
 }

@@ -21,6 +21,12 @@ public class UserController {
         return UserServices.loginUser(email, password);
     }
 
+    @GetMapping("/users/actions/first_room")
+    public ResponseEntity<Object> firstRoom(
+            @RequestParam(name = "hotel_id") String hotel_id) {
+        return UserServices.firstRoom(hotel_id);
+    }
+
     @GetMapping("/users/actions/rooms")
     public ResponseEntity<Object> allRooms(
             @RequestParam(name = "hotel_id") String hotel_id) {
@@ -30,5 +36,22 @@ public class UserController {
     @GetMapping("/users/actions/hotels")
     public ResponseEntity<Object> allHotels() {
         return UserServices.getAllHotels();
+    }
+
+    @GetMapping("/users/actions/facilities")
+    public ResponseEntity<Object> allFacilities() {
+        return UserServices.getAllFacilities();
+    }
+
+    @GetMapping("/users/actions/hotel_facilities")
+    public ResponseEntity<Object> getFacilitiesByHotel(
+            @RequestParam(name = "hotel_id") String hotel_id) {
+        return UserServices.getFacilitiesByHotel(hotel_id);
+    }
+
+    @GetMapping("/users/actions/delete_facility")
+    public ResponseEntity<Object> deleteFacility(
+            @RequestParam(name = "facility_id") String facility_id) {
+        return UserServices.deleteFacility(facility_id);
     }
 }
