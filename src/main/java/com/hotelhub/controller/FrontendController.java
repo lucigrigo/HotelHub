@@ -33,9 +33,9 @@ public class FrontendController {
     public ResponseEntity<Object> createBooking(
             @RequestBody Room room,
             @RequestParam(name = "user_id") String user_id,
-            @RequestParam(name = "start_date") Date start_date,
-            @RequestParam(name = "end_date") Date end_date) {
-        return ClientServices.createBooking(user_id, room, start_date, end_date);
+            @RequestParam(name = "start_date") Long start_date,
+            @RequestParam(name = "end_date") Long end_date) {
+        return ClientServices.createBooking(user_id, room, new Date(start_date), new Date(end_date));
     }
 
     @GetMapping("/client/booking/cancel")
