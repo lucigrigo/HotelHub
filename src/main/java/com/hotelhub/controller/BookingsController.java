@@ -37,9 +37,9 @@ public class BookingsController {
     @GetMapping("/bookings/rooms/available")
     public ResponseEntity<Object> getAvailableRooms(
             @RequestParam(name = "hotel_id") String hotel_id,
-            @RequestParam(name = "start_date") Date start_date,
-            @RequestParam(name = "end_date") Date end_date) {
-        return BookingsServices.getAvailableRooms(hotel_id, start_date, end_date);
+            @RequestParam(name = "start_date") Long start_date,
+            @RequestParam(name = "end_date") Long end_date) {
+        return BookingsServices.getAvailableRooms(hotel_id, new Date(start_date), new Date(end_date));
     }
 
     @GetMapping("/bookings/rooms/get")
