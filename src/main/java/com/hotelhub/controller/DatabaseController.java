@@ -981,10 +981,13 @@ public class DatabaseController {
         if (document.getBoolean("isAdmin") != null) {
             isAdmin = Objects.requireNonNull(document.getBoolean("isAdmin"));
         }
-
-        String hotel_admin = document.getString("hotel_admin");
-        assert hotel_admin != null;
-
+        String hotel_admin;
+        if (isAdmin) {
+            hotel_admin = document.getString("hotel_admin");
+            assert hotel_admin != null;
+        } else {
+            hotel_admin = null;
+        }
         return new User(user_id, name, email, password, isAdmin, hotel_admin);
     }
 }
