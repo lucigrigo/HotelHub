@@ -27,6 +27,21 @@ public class UserServices {
         }
     }
 
+    public static ResponseEntity<Object> getUserById(String user_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            if (DatabaseController.hasRoom(database, user_id)) {
+                User user = DatabaseController.getUserById(database, user_id);
+                return new ResponseEntity<>(user, null, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+            }
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     public static ResponseEntity<Object> loginUser(String email, String password) {
         try {
             Firestore database = DatabaseController.getDatabase();

@@ -962,4 +962,29 @@ public class DatabaseController {
 
         return null;
     }
+
+    public static User getUserById(Firestore db, String user_id) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = db.collection("users").document(user_id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        String name = document.getString("name");
+        assert name != null;
+
+        String email = document.getString("email");
+        assert email != null;
+
+        String password = document.getString("password");
+        assert password != null;
+
+        boolean isAdmin = false;
+        if (document.getBoolean("isAdmin") != null) {
+            isAdmin = Objects.requireNonNull(document.getBoolean("isAdmin"));
+        }
+
+        String hotel_admin = document.getString("hotel_admin");
+        assert hotel_admin != null;
+
+        return new User(user_id, name, email, password, isAdmin, hotel_admin);
+    }
 }

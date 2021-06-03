@@ -21,6 +21,12 @@ public class UserController {
         return UserServices.loginUser(email, password);
     }
 
+    @GetMapping("/users/get")
+    public ResponseEntity<Object> getUserById(
+            @RequestParam(name = "user_id") String user_id) {
+        return UserServices.getUserById(user_id);
+    }
+
     @GetMapping("/users/actions/first_room")
     public ResponseEntity<Object> firstRoom(
             @RequestParam(name = "hotel_id") String hotel_id) {

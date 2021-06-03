@@ -4,6 +4,7 @@ import com.google.cloud.firestore.Firestore;
 import com.hotelhub.controller.DatabaseController;
 import com.hotelhub.model.Hotel;
 import com.hotelhub.model.Room;
+import com.hotelhub.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
