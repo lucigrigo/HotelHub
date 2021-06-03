@@ -16,6 +16,7 @@ public class BookingsController {
         return BookingsServices.getHotelConfirmedBookings(hotel_id);
     }
 
+    @GetMapping("/bookings/hotel/not_confirmed")
     public ResponseEntity<Object> getNotHotelConfirmedBookings(
             @RequestParam(name = "hotel_id") String hotel_id) {
         return BookingsServices.getHotelNotConfirmedBookings(hotel_id);
