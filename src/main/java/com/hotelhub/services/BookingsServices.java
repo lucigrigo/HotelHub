@@ -103,4 +103,19 @@ public class BookingsServices {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static ResponseEntity<Object> getHotelNotConfirmedBookings(String hotel_id) {
+        try {
+            Firestore database = DatabaseController.getDatabase();
+            List<Booking> bookings = DatabaseController.getHotelNotConfirmedBookings(database, hotel_id);
+            if (!bookings.isEmpty()) {
+                return new ResponseEntity<>(bookings, null, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(null, null, HttpStatus.OK);
+            }
+        } catch (IOException | ExecutionException | InterruptedException exception) {
+            exception.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

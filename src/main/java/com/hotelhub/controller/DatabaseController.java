@@ -516,6 +516,52 @@ public class DatabaseController {
         return bookings;
     }
 
+    public static List<Booking> getHotelNotConfirmedBookings(Firestore db, String hotel_id)
+            throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
+        QuerySnapshot querySnapshot = query.get();
+        List<QueryDocumentSnapshot> documents = querySnapshot.getDocuments();
+        List<Booking> bookings = new ArrayList<>();
+
+        for (QueryDocumentSnapshot document : documents) {
+            String doc_hotel_id = document.getString("hotel_id");
+            assert doc_hotel_id != null;
+
+            if (doc_hotel_id.equals(hotel_id)) {
+                String booking_id = document.getString("booking_id");
+                assert booking_id != null;
+
+                String room_id = document.getString("room_id");
+                assert room_id != null;
+
+                String user_id = document.getString("user_id");
+                assert user_id != null;
+
+                boolean to_be_canceled = false;
+                if (document.getBoolean("to_be_canceled") != null) {
+                    to_be_canceled = Objects.requireNonNull(document.getBoolean("to_be_canceled"));
+                }
+
+                Date start_date = document.getDate("start_date");
+                assert start_date != null;
+
+                Date end_date = document.getDate("end_date");
+                assert end_date != null;
+
+                boolean approved = false;
+                if (document.getBoolean("approved") != null) {
+                    approved = Objects.requireNonNull(document.getBoolean("approved"));
+                }
+
+                if (!approved) {
+                    bookings.add(new Booking(booking_id, room_id, hotel_id,
+                            user_id, true, to_be_canceled, start_date, end_date));
+                }
+            }
+        }
+        return bookings;
+    }
+
     public static List<Booking> getHotelToDeleteBookings(Firestore db, String hotel_id)
             throws ExecutionException, InterruptedException {
         ApiFuture<QuerySnapshot> query = db.collection("bookings").get();
