@@ -748,7 +748,22 @@ public class DatabaseController {
                 String room_id = document.getString("room_id");
                 assert room_id != null;
 
-                if (doc_end_date.after(start_date) || doc_start_date.before(end_date)) {
+                if (doc_start_date.after(start_date) && doc_end_date.before(end_date)) {
+                    unavailableRooms.add(room_id);
+                    continue;
+                }
+
+                if (doc_end_date.after(end_date) && doc_start_date.before(end_date)) {
+                    unavailableRooms.add(room_id);
+                    continue;
+                }
+
+                if (doc_start_date.before(start_date) && doc_end_date.after(start_date)) {
+                    unavailableRooms.add(room_id);
+                    continue;
+                }
+
+                if (doc_start_date.before(start_date) && doc_end_date.after(end_date)) {
                     unavailableRooms.add(room_id);
                 }
             }
